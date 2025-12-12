@@ -83,21 +83,10 @@ void exibirTabuleiro(int tabuleiro[TAMANHO][TAMANHO]) {
     //Definir status do jogador caso ele perca
     bool status = true;
 
-    while(status == false) {
-
-        printf("Digite a coordenada Y\n-> ");
-        scanf("%d", &coordenadaY);
-
-        printf("Digite a coordenada X \n->");
-        scanf("%d", &coordenadaX);
-
-
-        
-    }
 
 
     //Método para exibição do tabuleiro
-    void exibirTabuleiro(int tabuleiro [9][9]) {
+    void exibir_tabuleiro(int tabuleiro [9][9]) {
 
         for (int contadorY = 0; contadorY < 9; contadorY++){
                 
@@ -113,7 +102,7 @@ void exibirTabuleiro(int tabuleiro[TAMANHO][TAMANHO]) {
 
 
 
-            void posicionar-frota (int tabuleiro[10][10]) {
+            void posicionar_frota (int tabuleiro[10][10]) {
                 int coordenadaY = randInt(0,9);
                 int coordenadaX = randInt(0,9);
 
