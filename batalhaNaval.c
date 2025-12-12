@@ -85,29 +85,6 @@ void exibirTabuleiro(int tabuleiro[TAMANHO][TAMANHO]) {
 
 
 
-    //Método para exibição do tabuleiro
-    void exibir_tabuleiro(int tabuleiro [9][9]) {
-
-        for (int contadorY = 0; contadorY < 9; contadorY++){
-                
-                printf("\n--------------------\n");
-
-                for(int contadorX = 0; contadorX < 9; contadorX++){
-                printf("| %d ", tabuleiro[contadorY][contadorX] );
-
-                }
-                    }
-                        }
-
-
-
-
-            void posicionar_frota (int tabuleiro[10][10]) {
-                int coordenadaY = randInt(0,9);
-                int coordenadaX = randInt(0,9);
-
-
-            }
 
     return 0;
 }
