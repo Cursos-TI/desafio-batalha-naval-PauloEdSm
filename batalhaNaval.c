@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include<stdbool.h>
-#include<sdtlib.h>
+#include<stdlib.h>
 #include<time.h>
 // Desafio Batalha Naval - MateCheck
 // Este código inicial serve como base para o desenvolvimento do sistema de Batalha Naval.
@@ -70,6 +70,8 @@ int main() {
 
             }
 
-            int
+            int configuração-frota[10][10] (int tabuleiro[10][10]) {
+            return tabuleiro;
+            }
     return 0;
 }
