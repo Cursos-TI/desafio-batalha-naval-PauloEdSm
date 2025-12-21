@@ -1,90 +1,168 @@
 #include <stdio.h>
-#include<stdbool.h>
-#include<stdlib.h>
-#include<time.h>
-#define TAMANHO 9
-// Desafio Batalha Naval - MateCheck
-// Este código inicial serve como base para o desenvolvimento do sistema de Batalha Naval.
-// Siga os comentários para implementar cada parte do desafio.
+#include <stdlib.h>
+#include <time.h>
+
+#define TAM 10
+#define NAVIOS 5
+
+int tamanhos[NAVIOS] = {5, 4, 3, 3, 2};
+
+/* Inicializa o tabuleiro com água */
+void inicializarTabuleiro(int tabuleiro[TAM][TAM]) {
+    for (int i = 0; i < TAM; i++) {
+        for (int j = 0; j < TAM; j++) {
+            tabuleiro[i][j] = 0;
+        }
+    }
+}
+
+/* Exibe o tabuleiro
+   ocultar = 1 → não mostra navios
+   ocultar = 0 → mostra tudo */
+void mostrarTabuleiro(int tabuleiro[TAM][TAM], int ocultar) {
+    printf("  ");
+    for (int i = 0; i < TAM; i++)
+        printf("%d ", i);
+    printf("\n");
+
+    for (int i = 0; i < TAM; i++) {
+        printf("%d ", i);
+        for (int j = 0; j < TAM; j++) {
+            if (ocultar && tabuleiro[i][j] == 1)
+                printf("~ ");
+            else if (tabuleiro[i][j] == 0)
+                printf("~ ");
+            else if (tabuleiro[i][j] == 1)
+                printf("N ");
+            else if (tabuleiro[i][j] == 2)
+                printf("O ");
+            else if (tabuleiro[i][j] == 3)
+                printf("X ");
+        }
+        printf("\n");
+    }
+}
+
+/* Verifica se um navio pode ser colocado */
+int podeColocar(int tabuleiro[TAM][TAM], int linha, int coluna, int tamanho, int horizontal) {
+    if (horizontal) {
+        if (coluna + tamanho > TAM) return 0;
+        for (int i = 0; i < tamanho; i++)
+            if (tabuleiro[linha][coluna + i] != 0) return 0;
+    } else {
+        if (linha + tamanho > TAM) return 0;
+        for (int i = 0; i < tamanho; i++)
+            if (tabuleiro[linha + i][coluna] != 0) return 0;
+    }
+    return 1;
+}
+
+/* Coloca um navio no tabuleiro */
+void colocarNavio(int tabuleiro[TAM][TAM], int tamanho) {
+    int linha, coluna, horizontal;
+
+    do {
+        linha = rand() % TAM;
+        coluna = rand() % TAM;
+        horizontal = rand() % 2;
+    } while (!podeColocar(tabuleiro, linha, coluna, tamanho, horizontal));
+
+    for (int i = 0; i < tamanho; i++) {
+        if (horizontal)
+            tabuleiro[linha][coluna + i] = 1;
+        else
+            tabuleiro[linha + i][coluna] = 1;
+    }
+}
+
+/* Posiciona todos os navios automaticamente */
+void posicionarNavios(int tabuleiro[TAM][TAM]) {
+    for (int i = 0; i < NAVIOS; i++) {
+        colocarNavio(tabuleiro, tamanhos[i]);
+    }
+}
+
+/* Executa um tiro no tabuleiro */
+int atirar(int tabuleiro[TAM][TAM], int linha, int coluna) {
+    if (tabuleiro[linha][coluna] == 1) {
+        tabuleiro[linha][coluna] = 3;
+        return 1;
+    } else if (tabuleiro[linha][coluna] == 0) {
+        tabuleiro[linha][coluna] = 2;
+    }
+    return 0;
+}
+
+/* Conta quantas partes de navios ainda existem */
+int naviosRestantes(int tabuleiro[TAM][TAM]) {
+    int count = 0;
+    for (int i = 0; i < TAM; i++)
+        for (int j = 0; j < TAM; j++)
+            if (tabuleiro[i][j] == 1)
+                count++;
+    return count;
+}
+
+/* Turno do jogador */
+void turnoJogador(int inimigo[TAM][TAM]) {
+    int linha, coluna;
+    printf("\nSeu turno!\n");
+    do {
+        printf("Linha: ");
+        scanf("%d", &linha);
+        printf("Coluna: ");
+        scanf("%d", &coluna);
+    } while (linha < 0 || linha >= TAM || coluna < 0 || coluna >= TAM);
+
+    if (atirar(inimigo, linha, coluna))
+        printf("Acertou um navio!\n");
+    else
+        printf("Errou!\n");
+}
+
+/* Turno do computador */
+void turnoComputador(int jogador[TAM][TAM]) {
+    int linha, coluna;
+    do {
+        linha = rand() % TAM;
+        coluna = rand() % TAM;
+    } while (jogador[linha][coluna] == 2 || jogador[linha][coluna] == 3);
+
+    printf("\nComputador atirou em %d %d\n", linha, coluna);
+    atirar(jogador, linha, coluna);
+}
 
 int main() {
-
-    //Logica do tabuleiro batalha naval:
-        //--Primeiro elemento: 
-            //--Armazena a coordenada "X" do tabuleiro
-
-        //--Segundo elemento: 
-            //--Armazena a coordenada "Y" do tabuleiro
-
-                //--Armazena o estado da posição no tabuleiro sendo eles:
-
-                    //--0 :
-                        //Condiz ao estado vazio e ausente de "bombas" da posição dada no tabuleiro
-        
-
-                    //--1 :
-                        //Condiz ao estado em que já há um navio presente naquela posição
-
-
-                    //--2 :
-                        //Condiz ao estado vazio porém com uma "bomba" posicionada da posição dada no tabuleiro
-
-    int tabuleiro [10][10];
-    
-    int coordenadaY;
-    int coordenadaX;
+    int jogador[TAM][TAM];
+    int computador[TAM][TAM];
 
     srand(time(NULL));
 
+    inicializarTabuleiro(jogador);
+    inicializarTabuleiro(computador);
 
-void exibirTabuleiro(int tabuleiro[TAMANHO][TAMANHO]) {
-    
-    // 1. Imprime os indices das COLUNAS (Cabecalho)
-    printf("\n   "); // Espaco para alinhar com o indice da linha
-    for (int i = 0; i < TAMANHO; i++) {
-        printf(" %d ", i);
-    }
-    printf("\n");
+    posicionarNavios(jogador);
+    posicionarNavios(computador);
 
-    // Loop para as LINHAS (Y)
-    for (int contadorY = 0; contadorY < TAMANHO; contadorY++) {
-        
-        // Imprime a l9inha divisoria (antes do conteudo de cada linha, exceto o topo)
-        printf("  +");
-        for (int i = 0; i < TAMANHO; i++) {
-            printf("---");
+    while (1) {
+        printf("\n=== SEU TABULEIRO ===\n");
+        mostrarTabuleiro(jogador, 0);
+
+        printf("\n=== TABULEIRO INIMIGO ===\n");
+        mostrarTabuleiro(computador, 1);
+
+        turnoJogador(computador);
+        if (naviosRestantes(computador) == 0) {
+            printf("\nVOCÊ VENCEU!\n");
+            break;
         }
-        printf("+\n");
 
-        // Imprime o indice da LINHA (Y)
-        printf("%d ", contadorY); 
-
-        // Loop para as COLUNAS (X) e os dados
-        for (int contadorX = 0; contadorX < TAMANHO; contadorX++) {
-            
-            // Imprime o divisor vertical e o valor
-            printf("|%2d", tabuleiro[contadorY][contadorX]); // Usando %2d para garantir espacamento uniforme
+        turnoComputador(jogador);
+        if (naviosRestantes(jogador) == 0) {
+            printf("\nVOCÊ PERDEU!\n");
+            break;
         }
-        
-        // Fecha a linha com divisor vertical e quebra de linha
-        printf("|\n");
     }
-    
-    // Imprime a linha divisoria final
-    printf("  +");
-    for (int i = 0; i < TAMANHO; i++) {
-        printf("---");
-    }
-    printf("+\n");
-}
-
-
-
-    //Definir status do jogador caso ele perca
-    bool status = true;
-
-
-
 
     return 0;
 }
